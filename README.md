@@ -1,3 +1,6 @@
+> **Note**
+> [PI_Hexapod URDF](https://github.com/gkjohnson/PI_ROS_Driver/tree/master/pi_hexapod_driver/pi_hexapod_description/urdf) generated via [gkjohnson/xacro-parser](https://github.com/gkjohnson/xacro-parser) and uploaded to this repo.
+
 # PI_ROS_Driver
 This package contains the ROS Driver for Hexapods from Physik Intrumente (PI).
 
