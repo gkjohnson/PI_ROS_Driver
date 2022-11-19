@@ -1,0 +1,688 @@
+<robot name="pi">
+
+  
+  
+  
+
+  <material name="gray">
+    <color rgba="0.8 0.8 0.8 1.0"/>
+  </material>
+
+    <link name="base_link">
+      <visual>
+        <origin xyz="-0.128                      -0.068                      -0.017" rpy="0                      0                      0"/>
+        <geometry>
+          <mesh filename="package://pi_hexapod_description/meshes/H-811/baseplate.stl" scale="0.001                        0.001                        0.001"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+     <collision>
+        <origin xyz="0                      0                      -0.0085" rpy="0                      0                      0"/>
+       <geometry>
+         <cylinder radius="0.075" length="0.019"/>
+       </geometry>
+     </collision>
+    </link>
+
+    <link name="zero_link">
+    </link>
+
+    <joint name="base_to_zero_joint_fixed" type="fixed">
+      <parent link="base_link"/>
+      <child link="zero_link"/>
+      <origin xyz="0 0 0.088326097" rpy="0 0 0"/>
+    </joint>
+
+    <!-- - - - - - - - - - - - - - - - - -->
+    <!--          ACTUATED LINKS         -->
+    <!-- - - - - - - - - - - - - - - - - -->
+    
+
+    
+      <link name="x_link">
+      </link>
+
+      <joint name="cart_x" type="prismatic">
+        <parent link="zero_link"/>
+        <child link="x_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="1 0 0"/>
+        <limit effort="300" lower="-0.0170001" upper="0.0170001" velocity="0.005"/>
+      </joint>
+    
+
+    
+      <link name="y_link">
+      </link>
+
+      <joint name="cart_y" type="prismatic">
+        <parent link="x_link"/>
+        <child link="y_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 1 0"/>
+        <limit effort="300" lower="-0.0160001" upper="0.0160001" velocity="0.005"/>
+      </joint>
+    
+
+    
+      <link name="z_link">
+      </link>
+
+      <joint name="cart_z" type="prismatic">
+        <parent link="y_link"/>
+        <child link="z_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 0 1"/>
+        <limit effort="300" lower="-0.0065001" upper="0.0065001" velocity="0.005"/>
+      </joint>
+    
+
+    
+
+    
+      <link name="u_link">
+      </link>
+
+      <joint name="ang_u" type="revolute">
+        <parent link="z_link"/>
+        <child link="u_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="1 0 0"/>
+        <limit effort="300" lower="-0.1745346705" upper="0.1745346705" velocity="0.625"/>
+      </joint>
+    
+
+    
+      <link name="v_link">
+      </link>
+
+      <joint name="ang_v" type="revolute">
+        <parent link="u_link"/>
+        <child link="v_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 1 0"/>
+        <limit effort="300" lower="-0.1745346705" upper="0.1745346705" velocity="0.625"/>
+      </joint>
+    
+
+    
+      <link name="w_link">
+      </link>
+
+      <joint name="ang_w" type="revolute">
+        <parent link="v_link"/>
+        <child link="w_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 0 1"/>
+        <limit effort="300" lower="-0.3665208882" upper="0.3665208882" velocity="0.625"/>
+      </joint>
+    
+
+    <link name="platform_link">
+      <visual>
+        <origin xyz="0                      0                      0.0045" rpy="0                      0                      0"/>
+        <geometry>
+          <mesh filename="package://pi_hexapod_description/meshes/H-811/H_811.I2_platform_with_logo.dae" scale="0.001                        0.001                        0.001"/>
+        </geometry>
+      </visual>
+       <collision>
+        <origin xyz="0                      0                      0.0045" rpy="0                      0                      0"/>
+         <geometry>
+           <cylinder radius="0.055" length="0.01"/>
+         </geometry>
+       </collision>
+    </link>
+
+    <joint name="platform_joint_fixed" type="fixed">
+      <parent link="w_link"/>
+      <child link="platform_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- - - - - - - - - - - - - - - - -->
+    <!--          ANCHOR LINKS         -->
+    <!-- - - - - - - - - - - - - - - - -->
+    
+
+    <!-- all axis base links need to be shifted by base_height in Z because
+         the z component of base_anchor is given in relation to zero_link, not to base_link-->
+    
+      <link name="axis0_base_anchor_link_1">
+      </link>
+
+      <joint name="axis0_base_anchor_joint_x" type="continuous">
+        <parent link="base_link"/>
+        <child link="axis0_base_anchor_link_1"/>
+	<origin xyz="0.055773843 0.012801635 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis0_base_anchor_link_2">
+      </link>
+
+      <joint name="axis0_base_anchor_joint_y" type="continuous">
+        <parent link="axis0_base_anchor_link_1"/>
+        <child link="axis0_base_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis0_base_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.037" rpy="1.57079632679 0 0.31415924388"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_LowerStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.037" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis0_base_anchor_joint_z" type="continuous">
+        <parent link="axis0_base_anchor_link_2"/>
+        <child link="axis0_base_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis1_base_anchor_link_1">
+      </link>
+
+      <joint name="axis1_base_anchor_joint_x" type="continuous">
+        <parent link="base_link"/>
+        <child link="axis1_base_anchor_link_1"/>
+	<origin xyz="-0.016800381 0.054702383 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis1_base_anchor_link_2">
+      </link>
+
+      <joint name="axis1_base_anchor_joint_y" type="continuous">
+        <parent link="axis1_base_anchor_link_1"/>
+        <child link="axis1_base_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis1_base_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.037" rpy="1.57079632679 0 1.78023590486"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_LowerStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.037" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis1_base_anchor_joint_z" type="continuous">
+        <parent link="axis1_base_anchor_link_2"/>
+        <child link="axis1_base_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis2_base_anchor_link_1">
+      </link>
+
+      <joint name="axis2_base_anchor_joint_x" type="continuous">
+        <parent link="base_link"/>
+        <child link="axis2_base_anchor_link_1"/>
+	<origin xyz="-0.038973463 0.041900747 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis2_base_anchor_link_2">
+      </link>
+
+      <joint name="axis2_base_anchor_joint_y" type="continuous">
+        <parent link="axis2_base_anchor_link_1"/>
+        <child link="axis2_base_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis2_base_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.037" rpy="1.57079632679 0 2.40855433163"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_LowerStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.037" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis2_base_anchor_joint_z" type="continuous">
+        <parent link="axis2_base_anchor_link_2"/>
+        <child link="axis2_base_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis3_base_anchor_link_1">
+      </link>
+
+      <joint name="axis3_base_anchor_joint_x" type="continuous">
+        <parent link="base_link"/>
+        <child link="axis3_base_anchor_link_1"/>
+	<origin xyz="-0.038973463 -0.041900748 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis3_base_anchor_link_2">
+      </link>
+
+      <joint name="axis3_base_anchor_joint_y" type="continuous">
+        <parent link="axis3_base_anchor_link_1"/>
+        <child link="axis3_base_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis3_base_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.037" rpy="1.57079632679 0 3.97935071195"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_LowerStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.037" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis3_base_anchor_joint_z" type="continuous">
+        <parent link="axis3_base_anchor_link_2"/>
+        <child link="axis3_base_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis4_base_anchor_link_1">
+      </link>
+
+      <joint name="axis4_base_anchor_joint_x" type="continuous">
+        <parent link="base_link"/>
+        <child link="axis4_base_anchor_link_1"/>
+	<origin xyz="-0.016800381 -0.054702383 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis4_base_anchor_link_2">
+      </link>
+
+      <joint name="axis4_base_anchor_joint_y" type="continuous">
+        <parent link="axis4_base_anchor_link_1"/>
+        <child link="axis4_base_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis4_base_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.037" rpy="1.57079632679 0 4.50294948057"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_LowerStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.037" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis4_base_anchor_joint_z" type="continuous">
+        <parent link="axis4_base_anchor_link_2"/>
+        <child link="axis4_base_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis5_base_anchor_link_1">
+      </link>
+
+      <joint name="axis5_base_anchor_joint_x" type="continuous">
+        <parent link="base_link"/>
+        <child link="axis5_base_anchor_link_1"/>
+	<origin xyz="0.055773843 -0.012801635 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis5_base_anchor_link_2">
+      </link>
+
+      <joint name="axis5_base_anchor_joint_y" type="continuous">
+        <parent link="axis5_base_anchor_link_1"/>
+        <child link="axis5_base_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis5_base_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.037" rpy="1.57079632679 0 -0.314159243882"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_LowerStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.037" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis5_base_anchor_joint_z" type="continuous">
+        <parent link="axis5_base_anchor_link_2"/>
+        <child link="axis5_base_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+
+    
+      <link name="axis0_platform_anchor_link_1">
+      </link>
+
+      <joint name="axis0_platform_anchor_joint_x" type="continuous">
+        <parent link="platform_link"/>
+        <child link="axis0_platform_anchor_link_1"/>
+	<origin xyz="0.029355221 0.025682309 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis0_platform_anchor_link_2">
+      </link>
+
+      <joint name="axis0_platform_anchor_joint_y" type="continuous">
+        <parent link="axis0_platform_anchor_link_1"/>
+        <child link="axis0_platform_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis0_platform_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.039" rpy="1.57079632679 0 -0.837758058361"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_UpperStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.039" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis0_platform_anchor_joint_z" type="continuous">
+        <parent link="axis0_platform_anchor_link_2"/>
+        <child link="axis0_platform_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis1_platform_anchor_link_1">
+      </link>
+
+      <joint name="axis1_platform_anchor_joint_x" type="continuous">
+        <parent link="platform_link"/>
+        <child link="axis1_platform_anchor_link_1"/>
+	<origin xyz="0.007563921 0.038263522 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis1_platform_anchor_link_2">
+      </link>
+
+      <joint name="axis1_platform_anchor_joint_y" type="continuous">
+        <parent link="axis1_platform_anchor_link_1"/>
+        <child link="axis1_platform_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis1_platform_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.039" rpy="1.57079632679 0 1.78023582661"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_UpperStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.039" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis1_platform_anchor_joint_z" type="continuous">
+        <parent link="axis1_platform_anchor_link_2"/>
+        <child link="axis1_platform_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis2_platform_anchor_link_1">
+      </link>
+
+      <joint name="axis2_platform_anchor_joint_x" type="continuous">
+        <parent link="platform_link"/>
+        <child link="axis2_platform_anchor_link_1"/>
+	<origin xyz="-0.036919143 0.012581213 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis2_platform_anchor_link_2">
+      </link>
+
+      <joint name="axis2_platform_anchor_joint_y" type="continuous">
+        <parent link="axis2_platform_anchor_link_1"/>
+        <child link="axis2_platform_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis2_platform_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.039" rpy="1.57079632679 0 0.314159219161"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_UpperStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.039" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis2_platform_anchor_joint_z" type="continuous">
+        <parent link="axis2_platform_anchor_link_2"/>
+        <child link="axis2_platform_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis3_platform_anchor_link_1">
+      </link>
+
+      <joint name="axis3_platform_anchor_joint_x" type="continuous">
+        <parent link="platform_link"/>
+        <child link="axis3_platform_anchor_link_1"/>
+	<origin xyz="-0.036919143 -0.012581213 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis3_platform_anchor_link_2">
+      </link>
+
+      <joint name="axis3_platform_anchor_joint_y" type="continuous">
+        <parent link="axis3_platform_anchor_link_1"/>
+        <child link="axis3_platform_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis3_platform_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.039" rpy="1.57079632679 0 2.82743343443"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_UpperStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.039" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis3_platform_anchor_joint_z" type="continuous">
+        <parent link="axis3_platform_anchor_link_2"/>
+        <child link="axis3_platform_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis4_platform_anchor_link_1">
+      </link>
+
+      <joint name="axis4_platform_anchor_joint_x" type="continuous">
+        <parent link="platform_link"/>
+        <child link="axis4_platform_anchor_link_1"/>
+	<origin xyz="0.007563922 -0.038263522 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis4_platform_anchor_link_2">
+      </link>
+
+      <joint name="axis4_platform_anchor_joint_y" type="continuous">
+        <parent link="axis4_platform_anchor_link_1"/>
+        <child link="axis4_platform_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis4_platform_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.039" rpy="1.57079632679 0 1.36135684362"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_UpperStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.039" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis4_platform_anchor_joint_z" type="continuous">
+        <parent link="axis4_platform_anchor_link_2"/>
+        <child link="axis4_platform_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+    
+      <link name="axis5_platform_anchor_link_1">
+      </link>
+
+      <joint name="axis5_platform_anchor_joint_x" type="continuous">
+        <parent link="platform_link"/>
+        <child link="axis5_platform_anchor_link_1"/>
+	<origin xyz="0.029355222 -0.025682309 0" rpy="0 0 0"/>
+	<axis xyz="1 0 0"/>
+      </joint>
+
+      <link name="axis5_platform_anchor_link_2">
+      </link>
+
+      <joint name="axis5_platform_anchor_joint_y" type="continuous">
+        <parent link="axis5_platform_anchor_link_1"/>
+        <child link="axis5_platform_anchor_link_2"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+
+      <link name="axis5_platform_anchor_link_3">
+        <visual>
+	  <origin xyz="0 0 0.039" rpy="1.57079632679 0 0.837757998909"/>
+          <geometry>
+            <mesh filename="package://pi_hexapod_description/meshes/H-811/H-811.I2_UpperStrut.stl" scale="0.001 0.001 0.001"/>
+          </geometry>
+        <material name="gray"/>
+        </visual>
+        <collision>
+	  <origin xyz="0                        0                        0.039" rpy="0                        0                        0"/>
+          <geometry>
+           <cylinder radius="0.014" length="0.08"/>
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="axis5_platform_anchor_joint_z" type="continuous">
+        <parent link="axis5_platform_anchor_link_2"/>
+        <child link="axis5_platform_anchor_link_3"/>
+        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+    
+
+
+  
+
+</robot>
